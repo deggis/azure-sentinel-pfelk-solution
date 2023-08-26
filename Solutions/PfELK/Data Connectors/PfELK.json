@@ -1,0 +1,83 @@
+{
+    "id": "PfELK",
+    "title": "PfELK",
+    "publisher": "Microsoft",
+    "descriptionMarkdown": "pfSense/OPNSense through Logstash",
+    "logo": "AzureSecurityCenter.svg",
+    "graphQueries": [
+    ],
+    "sampleQueries": [
+        {
+            "description": "All logs",
+            "query": "PfELK\n| sort by TimeGenerated"
+        }
+    ],
+    "dataTypes": [
+        {
+            "name": "SecurityAlert (ASC)",
+            "lastDataReceivedQuery": "SecurityAlert | where ProductName == \"Azure Security Center\"\n| summarize Time = max(TimeGenerated)\n| where isnotempty(Time)"
+        }
+    ],
+    "connectivityCriterias": [
+        {
+            "type": "IsConnectedQuery",
+            "value": [
+                "PfELK_CL\n| summarize LastLogReceived = max(TimeGenerated)\n| project IsConnected = LastLogReceived > ago(30d)"
+            ]
+        }
+    ],
+    "availability": {
+        "status": 1
+    },
+    "permissions": {
+        "resourceProvider": [
+            {
+                "provider": "Microsoft.OperationalInsights/workspaces",
+                "permissionsDisplayText": "read and write permissions.",
+                "providerDisplayName": "Workspace",
+                "scope": "Workspace",
+                "requiredPermissions": {
+                    "read": true,
+                    "write": true,
+                    "delete": true
+                }
+            }
+        ]
+    },
+    "instructionSteps": [
+        {
+            "title": "Connect Microsoft Defender for Cloud to Microsoft Sentinel",
+            "description": "Mark the check box of each Azure subscription whose alerts you want to import into Microsoft Sentinel, then select **Connect** above the list.\n\n> The connector can be enabled only on subscriptions that have at least one Microsoft Defender plan enabled in Microsoft Defender for Cloud, and only by users with Security Reader permissions on the subscription.",
+            "instructions": [
+                {
+                    "parameters": {},
+                    "type": "AzureSecurityCenterSubscriptions"
+                }
+            ]
+        }
+    ],
+    "caseGenerationSteps": [
+        {
+            "instructions": [
+                {
+                    "title": "", 
+                    "description": ">**NOTE:** This data connector depends on existing PfELK installation: PfSense/OPNSense + Logstash.",
+                    "instructions": [ 
+                    ]    
+                },
+                {
+                    "title": "1. Check guide",
+                    "description": ""
+                },
+                {
+                    "title": "2. Complete guide",
+                    "description": "."
+                },
+                {
+                    "title": "3. Validate connection",
+                    "description": ""
+                }
+            ]
+        }
+    ]
+}
